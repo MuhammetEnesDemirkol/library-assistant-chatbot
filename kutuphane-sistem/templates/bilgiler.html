@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batman Üniversitesi Kütüphane Bilgileri</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 0.5rem 0;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand:hover {
+            color: var(--secondary-color) !important;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 2px solid var(--light-bg);
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.25rem;
+        }
+
+        .card-header h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid var(--light-bg);
+            padding: 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--light-bg);
+        }
+
+        .staff-card {
+            height: 100%;
+            background: white;
+        }
+
+        .staff-card .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .staff-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+        }
+
+        .contact-item i {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+
+        .announcement-date {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .announcement-title {
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .announcement-title:hover {
+            color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 1.5rem 0;
+            }
+
+            .card-header h2 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-house-fill"></i>
+                Anasayfa
+            </a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 class="display-4">Batman Üniversitesi Kütüphane Bilgileri</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ error }}
+        </div>
+        {% else %}
+
+        <!-- Duyurular -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-megaphone-fill"></i> Son Duyurular</h2>
+            </div>
+            <div class="card-body">
+                {% if announcements %}
+                <div class="list-group">
+                    {% for announcement in announcements %}
+                    <a href="{{ announcement.url }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <h5 class="mb-1 announcement-title">{{ announcement.title }}</h5>
+                            <small class="announcement-date">{{ announcement.date }}</small>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted"><i class="bi bi-info-circle me-2"></i>Henüz duyuru bulunmamaktadır.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Personel Bilgileri -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-people-fill"></i> Personel Bilgileri</h2>
+            </div>
+            <div class="card-body">
+                {% if staff %}
+                <div class="row">
+                    {% for person in staff %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card staff-card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ person.name }}</h5>
+                                <div class="staff-info">
+                                    <i class="bi bi-person-badge"></i>
+                                    <span>{{ person.title }}</span>
+                                </div>
+                                {% if person.phone %}
+                                <div class="staff-info">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>{{ person.phone }}</span>
+                                </div>
+                                {% endif %}
+                                {% if person.email %}
+                                <div class="staff-info">
+                                    <i class="bi bi-envelope"></i>
+                                    <a href="mailto:{{ person.email }}" class="text-decoration-none">{{ person.email }}</a>
+                                </div>
+                                {% endif %}
+                                {% if person.room %}
+                                <div class="staff-info">
+                                    <i class="bi bi-door-open"></i>
+                                    <span>Oda: {{ person.room }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted"><i class="bi bi-info-circle me-2"></i>Personel bilgisi bulunamadı.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- İletişim Bilgileri -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="bi bi-geo-alt-fill"></i> İletişim Bilgileri</h2>
+            </div>
+            <div class="card-body">
+                {% if contact %}
+                <div class="contact-info">
+                    {% if contact.address %}
+                    <div class="contact-item">
+                        <i class="bi bi-geo"></i>
+                        <span>{{ contact.address }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if contact.phone %}
+                    <div class="contact-item">
+                        <i class="bi bi-telephone"></i>
+                        <div>
+                            {% for phone in contact.phone %}
+                            <div>{{ phone }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if contact.email %}
+                    <div class="contact-item">
+                        <i class="bi bi-envelope"></i>
+                        <a href="mailto:{{ contact.email }}" class="text-decoration-none">{{ contact.email }}</a>
+                    </div>
+                    {% endif %}
+                    
+                    {% if contact.working_hours %}
+                    <div class="contact-item">
+                        <i class="bi bi-clock"></i>
+                        <span>{{ contact.working_hours }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <p class="text-muted"><i class="bi bi-info-circle me-2"></i>İletişim bilgisi bulunamadı.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
