@@ -1,126 +1,61 @@
-# 🤖 Batman University Library Assistant
+# Üniversite Kütüphanesi Yapay Zeka Asistanı
 
-This project is an AI-powered assistant system developed for the Batman University Library. It helps users search library resources, access academic publications, and get information about library services.
+Batman Üniversitesi Kütüphanesi için geliştirilmiş sohbet tabanlı asistan. Kullanıcı doğal dille soru sorar; sistem kütüphane kataloğunu, akademik arşivi ve kütüphane web sitesini tarayıp yanıtı Türkçe ve düzenli biçimde döndürür.
 
-> ⚠️ Disclaimer: This project is a generalized version of a freelance work delivered to a private client. No confidential information is shared.
+> Bu depo, özel bir müşteri için yapılan çalışmanın genelleştirilmiş sürümüdür.
 
----
+## Çözdüğü problem
 
-## 🚀 Features
+Öğrenci ve akademisyenler kaynağı bulmak için katalog, tez arşivi ve duyuru sayfaları arasında dolaşır. Asistan bu üç kaynağı tek bir sohbet kutusunda birleştirir.
 
-1. **Library Catalog Search**
-   - Search books, journals, and other materials via Yordam API
-   - Access detailed bibliographic information
-   - Secure API access with a static token
+## Özellikler
 
-2. **Academic Resource Search**
-   - Access academic papers via OAI-PMH protocol
-   - Search theses, articles, and proceedings
-   - Retrieve metadata for academic documents
+- Katalog araması: Yordam kütüphane otomasyonunun web servisi üzerinden kitap ve dergi sorgulama.
+- Akademik arşiv: OAI-PMH protokolüyle kurumsal arşivden (tez, makale vb.) üst veri çekme.
+- Kütüphane bilgisi: web sitesinden duyuruları, personel listesini ve iletişim bilgilerini çekme.
+- Yapay zeka yanıtı: LangChain ve OpenAI ile Türkçe, başlık-yazar-tarih biçiminde düzenli yanıt.
+- Basit web arayüzü (Jinja2 şablonları).
 
-3. **Library Information**
-   - Up-to-date announcements
-   - Staff directory
-   - Contact information
-   - Working hours
+## Teknoloji yığını
 
-4. **AI-Powered Support**
-   - ChatGPT integration for smart responses
-   - Full Turkish language support
-   - Library-specific customized replies
+Python, FastAPI, Jinja2, LangChain, OpenAI API, Requests, BeautifulSoup, Sickle (OAI-PMH).
 
----
+## Proje yapısı
 
-## ⚙️ Installation
+```
+kutuphane-sistem/
+├── app.py                    FastAPI uygulaması (GET /, POST /sorgula, GET /bilgiler)
+├── integrations/
+│   ├── query_service.py      Sorguyu doğru kaynağa yönlendirir
+│   ├── library_api.py        Yordam katalog servisi
+│   ├── oai_pmh.py            Akademik arşiv (OAI-PMH)
+│   ├── web_scraper.py        Duyuru, personel, iletişim
+│   ├── yordam_token_manager.py
+│   └── chatgpt.py            LangChain + OpenAI yanıt üretimi
+├── scrapers/                 Web sitesi tarayıcısı
+├── templates/ ve static/     Arayüz
+└── requirements.txt
+images/                       Çalışma kaydı (video)
+```
 
-1. Install Python 3.8 or higher.
-2. Clone the project:
-   ```bash
-   git clone https://github.com/yourusername/library-assistant-chatbot.git
-   cd library-assistant-chatbot
-   ```
+## Kurulum
 
-3. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   # On Windows
-   venv\Scripts\activate
-   # On Linux/MacOS
-   source venv/bin/activate
-   ```
+Gereksinimler: Python 3.8+ ve bir OpenAI API anahtarı.
 
-4. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+cd kutuphane-sistem
+pip install -r requirements.txt
+```
 
-5. Create a `.env` file and configure required environment variables:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key
-   LIBRARY_API_URL=your_library_api_url
-   LIBRARY_API_USER=your_api_user
-   LIBRARY_API_PASS=your_api_pass
-   STATIC_YORDAM_TOKEN=your_static_token
-   ```
-
----
-
-## ▶️ Running the App
-
-To start the development server:
+Aynı klasörde bir ortam dosyası oluşturup şu değişkenleri tanımlayın (değerleri depoya eklemeyin): `OPENAI_API_KEY`, kütüphane servis adresi ve kullanıcı bilgileri, Yordam erişim anahtarı. Değişken adları için `integrations/` altındaki dosyalara bakın.
 
 ```bash
 uvicorn app:app --reload
 ```
 
-The app will be accessible at: [http://localhost:8000](http://localhost:8000)
+Uygulama `http://localhost:8000` adresinde açılır.
 
----
+## Notlar
 
-## 📡 API Endpoints
-
-- `GET /` – Home page
-- `POST /sorgula` – Handles user queries
-- `GET /bilgiler` – Returns general library information
-
----
-
-## 📁 Project Structure
-
-```
-library-assistant-chatbot/
-├── app.py                # Main application
-├── requirements.txt      # Python dependencies
-├── .env                  # Environment variables
-├── README.md             # Documentation
-├── static/               # Static assets (CSS, JS, images)
-├── templates/            # HTML templates
-├── integrations/         # API integrations
-│   ├── library_api.py    # Yordam API integration
-│   ├── oai_pmh.py        # OAI-PMH integration
-│   └── query_service.py  # Core query processing
-└── scrapers/             # Web scrapers (if any)
-```
-
----
-
-## 💻 Development Guidelines
-
-1. Follow PEP 8 code standards.
-2. Create a new branch for each feature.
-3. Test all changes before committing.
-4. Submit pull requests for review.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
-
-## 👨‍💼 Author
-**Muhammet Enes DEMİRKOL** – Project Developer
-
----
+- Kütüphane servis adresleri ve web sitesi yapısı Batman Üniversitesi'ne özeldir; başka bir kurum için uyarlanması gerekir.
+- Yordam servisine erişilemezse örnek (mock) veri yedeği kodda bulunur.
